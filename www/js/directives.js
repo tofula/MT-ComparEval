@@ -47,7 +47,22 @@ angular.module( 'MT-ComparEval', [] )
 					var newSettings = {};
 					$.extend(deepCopy, newSettings, chartsDefaults, JSON.parse(attrs.value));
 					var chart = new Highcharts.Chart(newSettings);
-				});
+
+					google.charts.load('current', {'packages':['corechart']});
+					google.charts.setOnLoadCallback(drawChart);
+					function drawChart() {
+						var data = new google.visualization.arrayToDataTable([
+								['Task','Bleu','TER'],
+								['BASE',0.5,0.2],
+								['OSM',0.6,0.5],
+							],
+						false);
+
+						var options ={'title': 'Google charts', 'width':400, 'height': 300};
+						var chart = new google.visualization.ComboChart(document.getElementById('gchart'));
+						chart.draw(data,options);
+					}
+				);
 			}
 		}
 	})
